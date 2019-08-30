@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      html,
+      body,
+      div,
+      span,
+      applet,
+      object,
+      iframe,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      p,
+      blockquote,
+      pre,
+      a,
+      abbr,
+      acronym,
+      address,
+      big,
+      cite,
+      code,
+      del,
+      dfn,
+      em,
+      img,
+      ins,
+      kbd,
+      q,
+      s,
+      samp,
+      small,
+      strike,
+      strong,
+      sub,
+      sup,
+      tt,
+      var,
+      b,
+      u,
+      i,
+      center,
+      dl,
+      dt,
+      dd,
+      ol,
+      ul,
+      li,
+      fieldset,
+      form,
+      label,
+      legend,
+      table,
+      caption,
+      tbody,
+      tfoot,
+      thead,
+      tr,
+      th,
+      td,
+      article,
+      aside,
+      canvas,
+      details,
+      embed,
+      figure,
+      figcaption,
+      footer,
+      header,
+      hgroup,
+      menu,
+      nav,
+      output,
+      ruby,
+      section,
+      summary,
+      time,
+      mark,
+      audio,
+      video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+      }
+      article,
+      aside,
+      details,
+      figcaption,
+      figure,
+      footer,
+      header,
+      hgroup,
+      menu,
+      nav,
+      section {
+        display: block;
+      }
+      body {
+        line-height: 1;
+      }
+      ol,
+      ul {
+        list-style: none;
+      }
+      blockquote,
+      q {
+        quotes: none;
+      }
+      blockquote:before,
+      blockquote:after,
+      q:before,
+      q:after {
+        content: "";
+        content: none;
+      }
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+
+      html,
+      body {
+        overflow: hidden;
+        background: black;
+      }
+
+      body {
+        display: flex;
+        flex-direction: row-reverse;
+      }
+
+      canvas {
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const w2 = w / 2;
+      const h2 = h / 2;
+      const PI_DOUBLE = Math.PI * 2;
+
+      const canvasDOMEL = document.querySelector("#canvas");
+      const ctx = canvasDOMEL.getContext("2d");
+
+      function randomFloat(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+
+      canvasDOMEL.setAttribute("width", `${w}px`);
+      canvasDOMEL.setAttribute("height", `${h}px`);
+      let pause = false;
+
+      window.onkeydown = function(e) {
+        switch (e.keyCode) {
+          case 32:
+            pause = !pause;
+            break;
+        }
+      };
+
+      let posX = 0;
+      let bouncePointLeft = w2 - 200 - randomInt(100, 300);
+      let bouncePointRight = w2 + 200 + randomInt(100, 300);
+
+      let sense = 1;
+      const ballRadius = 20;
+      let acceleration = 0;
+
+      let intervalID = setInterval(() => {
+        if (pause) return;
+
+        ctx.clearRect(0, 0, w, h);
+
+        acceleration += .01;
+
+        // ball
+        ctx.beginPath();
+        ctx.fillStyle = `rgb(0, 0, 0)`;
+        posX += sense;
+        ctx.arc(100 + (posX * acceleration), h2, ballRadius, 0, PI_DOUBLE);
+        ctx.fill();
+        ctx.closePath();
+
+        // grass
+        ctx.beginPath();
+        ctx.fillStyle = `rgb(0, 200, 0)`;
+        ctx.rect(0, h2 + ballRadius, w, h);
+        ctx.fill();
+        ctx.closePath();
+
+        // line
+        ctx.beginPath();
+        ctx.lineWidth = 5;
+        ctx.moveTo(0, h2 + ballRadius);
+        ctx.lineTo(w, h2 + ballRadius);
+        ctx.stroke();
+        ctx.closePath();
+      }, 10);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      html,
+      body,
+      div,
+      span,
+      applet,
+      object,
+      iframe,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      p,
+      blockquote,
+      pre,
+      a,
+      abbr,
+      acronym,
+      address,
+      big,
+      cite,
+      code,
+      del,
+      dfn,
+      em,
+      img,
+      ins,
+      kbd,
+      q,
+      s,
+      samp,
+      small,
+      strike,
+      strong,
+      sub,
+      sup,
+      tt,
+      var,
+      b,
+      u,
+      i,
+      center,
+      dl,
+      dt,
+      dd,
+      ol,
+      ul,
+      li,
+      fieldset,
+      form,
+      label,
+      legend,
+      table,
+      caption,
+      tbody,
+      tfoot,
+      thead,
+      tr,
+      th,
+      td,
+      article,
+      aside,
+      canvas,
+      details,
+      embed,
+      figure,
+      figcaption,
+      footer,
+      header,
+      hgroup,
+      menu,
+      nav,
+      output,
+      ruby,
+      section,
+      summary,
+      time,
+      mark,
+      audio,
+      video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+      }
+      article,
+      aside,
+      details,
+      figcaption,
+      figure,
+      footer,
+      header,
+      hgroup,
+      menu,
+      nav,
+      section {
+        display: block;
+      }
+      body {
+        line-height: 1;
+      }
+      ol,
+      ul {
+        list-style: none;
+      }
+      blockquote,
+      q {
+        quotes: none;
+      }
+      blockquote:before,
+      blockquote:after,
+      q:before,
+      q:after {
+        content: "";
+        content: none;
+      }
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+
+      html,
+      body {
+        overflow: hidden;
+        background: black;
+      }
+
+      body {
+        display: flex;
+        flex-direction: row-reverse;
+      }
+
+      canvas {
+        background: white;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const w2 = w / 2;
+      const h2 = h / 2;
+      const PI_DOUBLE = Math.PI * 2;
+
+      const canvasDOMEL = document.querySelector("#canvas");
+      const ctx = canvasDOMEL.getContext("2d");
+
+      canvasDOMEL.setAttribute("width", `${w}px`);
+      canvasDOMEL.setAttribute("height", `${h}px`);
+
+      //   ctx.save();
+      //   for (var i = 0; i < 100; i++) {
+
+      //     ctx.translate(50, 0);
+      //     ctx.beginPath();
+      //     ctx.arc(0, h2, 10, 0, PI_DOUBLE);
+      //     ctx.fill();
+      //     ctx.closePath();
+
+      // }
+      // ctx.restore();
+
+      function randomFloat(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+
+      let shuffle = array => array.sort(() => Math.random() - 0.5);
+
+      //   for (var i = 0; i < 100; i++) {
+      //     ctx.save();
+
+      //     // ctx.translate(50, 0);
+      //     let rand = 1 //randomFloat(1, 2);
+      //     ctx.scale(rand, rand);
+      //     ctx.beginPath();
+      //     // ctx.arc(randomInt(0, w), randomInt(0, h), 10, 0, PI_DOUBLE);
+
+      //     ctx.arc(i * 20, h2, 5, 0, PI_DOUBLE);
+      //     ctx.fill();
+      //     ctx.closePath();
+
+      //     ctx.restore();
+      //   }
+
+      // rotate and translate
+      function drawSegments(
+        length,
+        angleIncrease,
+        lineWidthParam,
+        strokeStyleParam
+      ) {
+        for (var angle = 0; angle < 360; angle += angleIncrease) {
+          ctx.save();
+
+        //   ctx.translate(w2, h2);
+          ctx.rotate((Math.PI * angle) / 180);
+          ctx.beginPath();
+          ctx.moveTo(200 - length, 0);
+          ctx.lineTo(200, 0);
+          ctx.strokeStyle = strokeStyleParam;
+          ctx.lineWidth = lineWidthParam;
+          ctx.stroke();
+          ctx.closePath();
+
+          ctx.restore();
+        }
+      }
+
+      function flower() {
+        drawSegments(150, 5, 10, `rgba(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)}, 1)`);
+        drawSegments(200, 5, 8, `rgba(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)}, 1)`);
+        drawSegments(randomInt(250, 400), 5, 6, `rgba(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)}, 1)`);
+      }
+
+      for (var i = 0; i < 20; i++) {
+        ctx.save();
+
+        ctx.translate(randomInt(0, w), randomInt(0, h));
+        // ctx.translate(w2, h2);
+        let scale = i / 15
+        ctx.scale(scale, scale)
+        flower();
+        ctx.restore();
+      }
+
+      // trigonometry
+      //   for (var angle = 0; angle < 360; angle += 10) {
+      //     ctx.beginPath();
+      //     ctx.moveTo(w2, h2);
+      //     ctx.lineTo(
+      //       w2 + 200 * Math.sin((Math.PI * angle) / 180),
+      //       h2 + 200 * Math.cos((Math.PI * angle) / 180)
+      //     );
+      //     ctx.stroke();
+      //     ctx.closePath();
+      //   }
+    </script>
+  </body>
+</html>
